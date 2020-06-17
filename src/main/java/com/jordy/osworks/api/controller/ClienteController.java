@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,9 +25,14 @@ public class ClienteController {
 	}
 	
 	@GetMapping("/clientes/{clienteId}")
-	public Cliente buscar(@PathVariable Long clienteId) {
+	public ResponseEntity<Cliente> buscar(@PathVariable Long clienteId) {
 		Optional <Cliente> cliente = clienteRepository.findById(clienteId);		
-		return cliente.orElse(null);// se a resposta não tiver nada, retorna null
+		
+		if(cliente.isPresent()) {// se houver obj na resposta
+			return ResponseEntity.ok(cliente.get()); //retorna obj e código 200 - ok
+		}
+		
+		return ResponseEntity.notFound().build();// se a resposta não tiver nada, retorna código 404 - not found
 	}
 
 }
