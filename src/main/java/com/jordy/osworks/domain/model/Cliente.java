@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Cliente {
@@ -13,9 +16,18 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank // valida que o valor no body nao aceita null, vazio ou espaços.
+	@Size(max = 60)
 	private String nome;
+
+	@Size(max = 255)
+	@Email // além de ver se está vazio ou nao, verifica se está no formato
+			// "email@empresa.com"
+	@NotBlank
 	private String email;
 
+	@NotBlank
+	@Size(max = 20)
 	@Column(name = "fone") // esta annotation n precisa colocar em todos pois o jpa ja faz automatico, mas
 							// como foi alterado no banco de dados para "FONE" aqui é usado.
 	private String telefone;
@@ -94,7 +106,5 @@ public class Cliente {
 			return false;
 		return true;
 	}
-	
-	
 
 }

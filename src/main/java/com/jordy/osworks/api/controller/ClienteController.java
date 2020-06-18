@@ -3,6 +3,8 @@ package com.jordy.osworks.api.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +47,7 @@ public class ClienteController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)// pode responder o código HTTP pelo proprio annotation
-	public Cliente adicionar(@RequestBody Cliente cliente) {// requestBody mapeia com o spring que o corpo que vai vir
+	public Cliente adicionar(@Valid @RequestBody Cliente cliente) {// requestBody mapeia com o spring que o corpo que vai vir
 															// da requisição post vai ser do tipo cliente
 		
 		return clienteRepository.save(cliente);
@@ -53,7 +55,7 @@ public class ClienteController {
 	}
 	
 	@PutMapping("/{clienteId}")
-	public ResponseEntity<Cliente> atualizar(@PathVariable Long clienteId, @RequestBody Cliente cliente){		
+	public ResponseEntity<Cliente> atualizar(@Valid @PathVariable Long clienteId, @RequestBody Cliente cliente){		
 		if(!clienteRepository.existsById(clienteId)) {
 			return ResponseEntity.notFound().build();
 		}
